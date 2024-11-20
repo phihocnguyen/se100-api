@@ -1,0 +1,158 @@
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+enum UserRole {
+    ADMIN
+    CUSTOMER
+    WHEMPLOYEE
+    DEEMPLOYEE
+}
+
+enum Rating {
+    ONE
+    TWO
+    THREE
+    FOR
+    FIVE
+}
+
+enum Status {
+    PROCESSING
+    SHIPPING
+    COMPLETED
+    CANCELED
+}
+
+model User {
+    id            String    @id @default(cuid())
+    email         String
+    password      String
+    role          UserRole
+    emailVerified DateTime
+    customer      Customer?
+    employee      Employee?
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+}
+
+model Customer {
+    id          String     @id @default(cuid())
+    fullName    String
+    phoneNumber String
+    image       String     @db.Text
+    userId      String     @unique
+    user        User       @relation(fields: [userId], references: [id])
+    invoices    Invoice[]
+    feedbacks   Feedback[]
+    createdAt   DateTime   @default(now())
+    updatedAt   DateTime   @updatedAt
+}
+
+model Employee {
+    id        String   @id @default(cuid())
+    fullName  String
+    salary    Int
+    image     String   @db.Text
+    beginDate DateTime
+    userId    String   @unique
+    user      User     @relation(fields: [userId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Product {
+    SKU            String          @unique
+    productName    String
+    purchasePrice  Int
+    sellingPrice   Int
+    image          String          @db.Text
+    categoryId     String
+    category       Category        @relation(fields: [categoryId], references: [id])
+    invoiceDetails InvoiceDetail[]
+    inventoryId    String
+    inventory      Inventory       @relation(fields: [inventoryId], references: [id])
+    feedbacks      Feedback[]
+    createdAt      DateTime        @default(now())
+    updatedAt      DateTime        @updatedAt
+}
+
+model Category {
+    id           String    @id @default(cuid())
+    categoryName String
+    products     Product[]
+    createdAt    DateTime  @default(now())
+    updatedAt    DateTime  @updatedAt
+}
+
+model Invoice {
+    id             String          @id @default(cuid())
+    invoiceDate    DateTime
+    totalPrice     Int
+    status         Status          @default(PROCESSING)
+    customerId     String
+    customer       Customer        @relation(fields: [customerId], references: [id])
+    invoiceDetails InvoiceDetail[]
+    createdAt      DateTime        @default(now())
+    updatedAt      DateTime        @updatedAt
+}
+
+model InvoiceDetail {
+    id         String   @id @default(cuid())
+    quantity   Int
+    totalPrice Int
+    invoiceId  String
+    invoice    Invoice  @relation(fields: [invoiceId], references: [id])
+    productSKU String
+    product    Product  @relation(fields: [productSKU], references: [SKU])
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+}
+
+model Supplier {
+    id               String        @id @default(cuid())
+    supplierName     String
+    address          String
+    email            String
+    phoneNumber      String
+    contactPerson    String
+    productsSupplied String[]
+    SupplyOrders     SupplyOrder[]
+    createdAt        DateTime      @default(now())
+    updatedAt        DateTime      @updatedAt
+}
+
+model SupplyOrder {
+    id              String   @id @default(cuid())
+    orderDate       DateTime
+    status          Status   @default(PROCESSING)
+    items           String[]
+    quantity        Int[]
+    totalAmount     Int
+    shippingAddress String
+    supplierId      String
+    supplier        Supplier @relation(fields: [supplierId], references: [id])
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+}
+
+model Inventory {
+    id       String    @id @default(cuid())
+    quantity Int
+    products Product[]
+}
+
+model Feedback {
+    id         String   @id @default(cuid())
+    content    String
+    rating     Rating   @default(ONE)
+    customerId String
+    customer   Customer @relation(fields: [customerId], references: [id])
+    productSKU String
+    product    Product  @relation(fields: [productSKU], references: [SKU])
+}
