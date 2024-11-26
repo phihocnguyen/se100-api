@@ -1,5 +1,6 @@
 import { Router } from "express";
 import UserController from "../controllers/user.controller";
+import upload from "../middleware/multer";
 
 class UserRoute {
     private readonly userController : UserController
@@ -8,8 +9,7 @@ class UserRoute {
     constructor () {
         this.userController = new UserController()
         this.router = Router()
-        this.router.get('/', this.userController.create.bind(this.userController))
-        this.router.get('/hello', this.userController.hello.bind(this.userController))
+        this.router.post('/', upload.single('image') ,this.userController.create.bind(this.userController))
     }
 }
 export default UserRoute

@@ -34,7 +34,8 @@ model User {
     email         String
     password      String
     role          UserRole
-    emailVerified DateTime
+    emailVerified DateTime?
+    image         String    @db.Text
     customer      Customer?
     employee      Employee?
     createdAt     DateTime  @default(now())
@@ -45,7 +46,6 @@ model Customer {
     id          String     @id @default(cuid())
     fullName    String
     phoneNumber String
-    image       String     @db.Text
     userId      String     @unique
     user        User       @relation(fields: [userId], references: [id])
     invoices    Invoice[]
@@ -58,7 +58,6 @@ model Employee {
     id        String   @id @default(cuid())
     fullName  String
     salary    Int
-    image     String   @db.Text
     beginDate DateTime
     userId    String   @unique
     user      User     @relation(fields: [userId], references: [id])

@@ -11,15 +11,8 @@ class UserController {
     async create(req: Request, res: Response){
         try {
             const data : User = req.body 
-            const newUser = await this.userService.create(data)
+            const newUser = await this.userService.create(data, req.file)
             res.status(201).json(newUser)
-        } catch (error : unknown) {
-            throw new Error(error as string)
-        }
-    }
-    async hello(req: Request, res: Response){
-        try {
-            res.send('hello world')
         } catch (error : unknown) {
             throw new Error(error as string)
         }
