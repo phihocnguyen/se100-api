@@ -30,16 +30,18 @@ enum Status {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    email         String
-    password      String
-    role          UserRole
-    emailVerified DateTime?
-    image         String    @db.Text
-    customer      Customer?
-    employee      Employee?
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt
+    id              String         @id @default(cuid())
+    email           String
+    password        String
+    role            UserRole
+    emailVerified   DateTime?
+    image           String         @db.Text
+    customer        Customer?
+    employee        Employee?
+    createdAt       DateTime       @default(now())
+    updatedAt       DateTime       @updatedAt
+    verifiedEmail   VerifiedEmail? @relation(fields: [verifiedEmailId], references: [id])
+    verifiedEmailId Int?
 }
 
 model Customer {
@@ -154,4 +156,13 @@ model Feedback {
     customer   Customer @relation(fields: [customerId], references: [id])
     productSKU String
     product    Product  @relation(fields: [productSKU], references: [SKU])
+}
+
+model VerifiedEmail {
+    id        Int      @id @default(autoincrement())
+    email     String
+    token     String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    user      User[]
 }
