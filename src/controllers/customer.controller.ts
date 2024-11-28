@@ -1,22 +1,59 @@
-import { Request, Response } from "express";
-import { User } from "@prisma/client";
-import UserService from "../services/user.service";
+import { NextFunction, Request, Response } from "express";
+import CustomerService from "../services/customer.service";
 
-class UserController {
-    private readonly userService : UserService 
+class CustomerController {
+    private readonly customerService : CustomerService 
     constructor () {
-        this.userService = new UserService()
+        this.customerService = new CustomerService()
     }
 
-    async create(req: Request, res: Response){
+    async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const data : User = req.body 
-            const newUser = await this.userService.create(data, req.file)
-            res.status(201).json(newUser)
+            const newCustomer = await this.customerService.create(req.body)
+            res.status(201).json(newCustomer)
         } catch (error : unknown) {
-            throw new Error(error as string)
+            next(error)
+        } 
+    }
+
+    async getAllCustomers(req: Request, res:Response, next: NextFunction) {
+        try {
+            const result = await this.customerService.getAllCustomers()
+            res.status(200).json(result)
+        } catch (error : unknown) {
+            next(error)
         }
     }
+
+    async getDetailCustomer(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id : string = req.params.id
+            const result = await this.customerService.getDetailCustomer(id)
+            res.status(200).json(result)
+        } catch (error : unknown){
+            next(error)
+        }
+    }
+    async edit(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id : string = req.params.id
+            const result = await this.customerService.edit(id, req.body)
+            res.status(200).json(result)
+        } catch (error : unknown){
+            next(error)
+        }
+    }
+    async delete(req: Request, res: Response, next: NextFunction) {
+        try {
+            const id : string = req.params.id
+            const result = await this.customerService.delete(id)
+            res.status(200).json(result)
+        } catch (error : unknown){
+            next(error)
+        }
+    }
+
+
 }
 
-export default UserController
+export default CustomerController
