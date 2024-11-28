@@ -1,38 +1,56 @@
-import { User } from "@prisma/client";
+import { Customer } from "@prisma/client";
 import db from "../config/db";
-import v2Cloudinary from "../utils/cloudinary";
 
-class UserRepository {
-    async create(data : User, file : Express.Multer.File | undefined) : Promise<User | null> {
-        let url = ''
-        await v2Cloudinary.uploader.upload(file!.path, (err, result) => {
-            if (err) {
-                return null
-            }
-            else {
-                url = result!.url
-            }
-        })
-        return db.user.create(
+class CustomerRepository {
+    async create(data : Customer) : Promise<Customer | null> {
+        const newCustomer = await db.customer.create(
             {
                 data: {
-                    ...data,
-                    image: url
+                    ...data
                 }
             }
         )
-        
+        return newCustomer
     }
-    async findByEmail(email: string): Promise<User | null> {
-    return db.user.findFirst(
-        {
-            where: {
-                email
-            }
-        }
-    )
-  }
+    async getAllCustomers () : Promise<Customer[] | null> {
+        const result = await db.customer.findMany()
+        return result
+    }
 
+    async getDetailCustomer (id : string) : Promise<Customer | null> {
+        const result = await db.customer.findUnique(
+            {
+                where: {
+                    id
+                }
+            }
+        )
+        return result
+    } 
+
+    async edit (id: string, data: Customer) : Promise<Customer | null> {
+        const result = await db.customer.update(
+            {
+                where: {
+                    id
+                },
+                data: {
+                    ...data
+                }
+            }
+        )
+        return result
+    }
+
+    async delete (id : string) : Promise<boolean> {
+        if (!id) return false
+        await db.customer.delete({
+            where: {
+                id
+            }
+        })
+        return true
+    }
 }
 
-export default UserRepository
+export default CustomerRepository

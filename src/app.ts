@@ -1,9 +1,9 @@
 import express, { Application } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import ErrorHandler from "./helpers/error-handler";
 import dotenv from "dotenv";
 import IndexRoute from "./routes";
+import errorHandler from "./helpers/error-handler";
 
 class App {
   private readonly app: Application;
@@ -34,8 +34,7 @@ class App {
   }
 
   private initErrorHandling() {
-    this.app.use(ErrorHandler.notFound);
-    this.app.use(ErrorHandler.serverError);
+    this.app.use(errorHandler)
   }
 
   public listen() {

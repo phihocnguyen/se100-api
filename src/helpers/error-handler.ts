@@ -1,18 +1,17 @@
 import { Request, Response, NextFunction } from "express";
 
-class ErrorHandler {
-  static notFound(req: Request, res: Response, next: NextFunction) {
-    res.status(404).json({ message: "Resource not found" });
-  }
+interface Error {
+  statusCode: number | 500,
+  status : string | "error"
+  message: string
+} 
 
-  static serverError(
-    error: Error,
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    res.status(500).json({ message: error.message });
-  }
+const errorHandler = (error: Error, req : Request, res : Response, next : NextFunction) => {
+    error.statusCode = error.statusCode || 500
+    error.status = error.status || "error"
+    res.status(error.statusCode).json({
+        status: error.statusCode,
+        message: error.message
+    })
 }
-
-export default ErrorHandler;
+export default errorHandler
