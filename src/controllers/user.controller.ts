@@ -1,9 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { User } from "@prisma/client";
 import UserService from "../services/user.service";
+import sendVerificationEmail from "../helpers/verification-email-sender";
+import token from "../helpers/token";
 
 class UserController {
-    private readonly userService : UserService 
+    private readonly userService : UserService
     constructor () {
         this.userService = new UserService()
     }
@@ -11,7 +13,11 @@ class UserController {
         try {
             const {email, password} : {email: string, password: string} = req.body
             const result : any = await this.userService.login(email, password)
-            if (result.token) res.status(200).json({message: 'Confirmation email sent', token: result.token})
+            if (result.token)
+            {
+                await sendVerificationEmail(email, result.token);
+                res.status(200).json({message: 'Confirmation email sent', token: result.token})
+            }
             else if (result.user) {
                 res.cookie('token', result.accessToken).json({
                     account: result.user,
@@ -23,19 +29,19 @@ class UserController {
             throw new Error(error as string)
         }
     }
-    async create(req: Request, res: Response){
+    async create(req: Request, res: Response, next: NextFunction){
         try {
-            const data : User = req.body 
+            const data : User = req.body
             const newUser = await this.userService.create(data, req.file)
             res.status(201).json(newUser)
         } catch (error : unknown) {
-            throw new Error(error as string)
+            next(error)
         }
     }
     async edit(req: Request, res: Response) {
         try {
             const id : string = req.params.id
-            const data : User = req.body 
+            const data : User = req.body
             const updatedUser = await this.userService.edit(id, data, req.file)
             res.status(200).json(updatedUser)
         } catch (error : unknown){
@@ -63,7 +69,7 @@ class UserController {
 
     async verifyEmail(req: Request, res : Response) {
         try {
-            const { token } = req.query 
+            const { token } = req.query
             const result = await this.userService.verifyEmail(token as string)
             if (result?.boolean === false) res.status(404).json(result)
             res.status(200).json(result)
