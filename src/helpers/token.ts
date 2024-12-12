@@ -18,11 +18,22 @@ const generateVerificationToken = async (email : string) => {
         })
     }
 
+    const user = await db.user.findFirst({
+        where: {
+            email
+        }
+    })
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+
     const verificationToken = await db.verifiedEmail.create(
         {
             data: {
                 email,
-                token
+                token,
+                userId: user.id
             }
         }
     )
