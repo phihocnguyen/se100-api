@@ -16,7 +16,7 @@ class UserController {
             if (result.token)
             {
                 await sendVerificationEmail(email, result.token);
-                res.status(200).json({message: 'Confirmation email sent', token: result.token})
+                res.status(200).json({message: 'Verification email sent', token: result.token})
             }
             else if (result.user) {
                 res.cookie('token', result.accessToken).json({
@@ -32,8 +32,15 @@ class UserController {
     async create(req: Request, res: Response, next: NextFunction){
         try {
             const data : User = req.body
-            const newUser = await this.userService.create(data, req.file)
-            res.status(201).json(newUser)
+            const newUserWithToken = await this.userService.create(data, req.file)
+            if (typeof(newUserWithToken) === "boolean") {
+                res.status(400).json({error: "User already exists"});
+                return;
+            }
+
+            const { newUser, token } = newUserWithToken;
+            await sendVerificationEmail(token, newUser.id);
+            res.status(201).json({ user: newUser, message: "Verification email sent" });
         } catch (error : unknown) {
             next(error)
         }
