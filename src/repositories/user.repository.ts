@@ -66,7 +66,6 @@ class UserRepository {
             }
         )
         if (existUser) return false
-        const verificationToken = await generateVerificationToken(data.email)
         let url = ''
         await v2Cloudinary.uploader.upload(file!.path, (err, result) => {
             if (err) {
@@ -85,6 +84,7 @@ class UserRepository {
                 }
             }
         )
+        const verificationToken = await generateVerificationToken(data.email)
         const newUserWithToken : newUserType = {
             newUser: newUser,
             token: verificationToken.token
