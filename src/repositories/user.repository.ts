@@ -81,7 +81,6 @@ class UserRepository {
                 data: {
                     ...data,
                     password: bcrypt.hashSync(data.password, salt),
-                    verifiedEmailId: verificationToken.id,
                     image: url
                 }
             }

@@ -30,18 +30,17 @@ enum Status {
 }
 
 model User {
-    id              String         @id @default(cuid())
-    email           String
-    password        String
-    role            UserRole
-    emailVerified   DateTime?
-    image           String         @db.Text
-    customer        Customer?
-    employee        Employee?
-    createdAt       DateTime       @default(now())
-    updatedAt       DateTime       @updatedAt
-    verifiedEmail   VerifiedEmail?
-    verifiedEmailId Int?
+    id            String         @id @default(cuid())
+    email         String
+    password      String
+    role          UserRole
+    emailVerified DateTime?
+    image         String         @db.Text
+    customer      Customer?
+    employee      Employee?
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+    verifiedEmail VerifiedEmail?
 }
 
 model Customer {

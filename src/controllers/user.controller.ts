@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { User } from "@prisma/client";
 import UserService from "../services/user.service";
 
@@ -23,13 +23,13 @@ class UserController {
             throw new Error(error as string)
         }
     }
-    async create(req: Request, res: Response){
+    async create(req: Request, res: Response, next: NextFunction){
         try {
             const data : User = req.body 
             const newUser = await this.userService.create(data, req.file)
             res.status(201).json(newUser)
         } catch (error : unknown) {
-            throw new Error(error as string)
+            next(error)
         }
     }
     async edit(req: Request, res: Response) {
