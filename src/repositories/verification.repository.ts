@@ -18,6 +18,15 @@ class VerifcationRepository {
         })
         return existingToken
     }
+
+    async deleteWithUserId(userId: string) : Promise<boolean> {
+        await db.verifiedEmail.deleteMany({
+            where: {
+                userId
+            }
+        });
+        return true;
+    }
 }
 
 export default VerifcationRepository

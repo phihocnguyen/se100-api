@@ -160,8 +160,12 @@ class UserRepository {
         if (!existingToken) return {message: 'Token does not exists!', boolean: true}
 
         const existingUser = await this.findByEmail(existingToken.email)
-        if (!existingToken) return {message: 'User does not exists!', boolean: false}
-        if(await this.updateVerification(existingUser?.id, existingToken.email)) {
+        if (!existingUser) return {message: 'User does not exists!', boolean: false}
+
+        const updateVerification = await this.updateVerification(existingUser?.id, existingToken.email)
+        const deleteVerifiedEmail = await this.verificationRepository.deleteWithUserId(existingUser?.id);
+
+        if (updateVerification && deleteVerifiedEmail) {
             return {
                 message: 'Email verified!',
                 boolean: true
