@@ -1,10 +1,6 @@
 import { Supplier } from "@prisma/client"
 import db from "../config/db"
 
-type productsSuppliedType = {
-    productsSupplied : string[]
-}
-
 class SupplierRepository {
     async create(data: Supplier) : Promise<Supplier | null> {
         const newSupplier = await db.supplier.create(
@@ -50,19 +46,7 @@ class SupplierRepository {
         )
         return result
     }
-    async getProductsSupplied (id : string) : Promise<{productsSupplied : string[]}  | null> {
-        const result = await db.supplier.findUnique(
-            {
-                where: {
-                    id
-                },
-                select: {
-                    productsSupplied: true
-                }
-            }
-        )
-        return result
-    }
+
 }
 
 export default SupplierRepository
