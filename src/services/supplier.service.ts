@@ -27,9 +27,6 @@ class SupplierService {
     async getDetailSupplier (id : string) : Promise<Supplier | null> {
         return this.supplierRepository.getDetailSupplier(id)
     }
-    async getProductsSupplied (id : string) : Promise<{productsSupplied : string[]} | null> {
-        return this.supplierRepository.getProductsSupplied(id)
-    }
 }
 
 export default SupplierService
