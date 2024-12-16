@@ -35,7 +35,7 @@ model User {
     password      String
     role          UserRole
     emailVerified DateTime?
-    image         String?         @db.Text
+    image         String?        @db.Text
     customer      Customer?
     employee      Employee?
     createdAt     DateTime       @default(now())
@@ -56,18 +56,18 @@ model Customer {
 }
 
 model Employee {
-    id        String   @id @default(cuid())
-    fullName  String
+    id          String   @id @default(cuid())
+    fullName    String
     phoneNumber String
-    beginDate DateTime
-    userId    String   @unique
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    beginDate   DateTime
+    userId      String   @unique
+    user        User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model Product {
-    SKU                String              @unique
+    SKU                String              @unique @default(cuid())
     productName        String
     purchasePrice      Int
     sellingPrice       Int
