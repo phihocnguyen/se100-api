@@ -13,7 +13,6 @@ class SupplierRoute {
         this.router.get('/:id', this.supplierController.getDetailSupplier.bind(this.supplierController))
         this.router.patch('/:id', this.supplierController.edit.bind(this.supplierController))
         this.router.delete('/:id', this.supplierController.delete.bind(this.supplierController))
-        this.router.get('/getproducts/:id', this.supplierController.getProductsSupplied.bind(this.supplierController))
     }
 }
 export default SupplierRoute

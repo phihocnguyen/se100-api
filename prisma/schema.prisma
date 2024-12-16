@@ -30,18 +30,17 @@ enum Status {
 }
 
 model User {
-    id              String         @id @default(cuid())
-    email           String
-    password        String
-    role            UserRole
-    emailVerified   DateTime?
-    image           String?         @db.Text
-    customer        Customer?
-    employee        Employee?
-    createdAt       DateTime       @default(now())
-    updatedAt       DateTime       @updatedAt
-    verifiedEmail   VerifiedEmail?
-    verifiedEmailId Int?
+    id            String         @id @default(cuid())
+    email         String
+    password      String
+    role          UserRole
+    emailVerified DateTime?
+    image         String?         @db.Text
+    customer      Customer?
+    employee      Employee?
+    createdAt     DateTime       @default(now())
+    updatedAt     DateTime       @updatedAt
+    verifiedEmail VerifiedEmail?
 }
 
 model Customer {
@@ -49,7 +48,7 @@ model Customer {
     fullName    String
     phoneNumber String
     userId      String     @unique
-    user        User       @relation(fields: [userId], references: [id])
+    user        User       @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     invoices    Invoice[]
     feedbacks   Feedback[]
     createdAt   DateTime   @default(now())
@@ -62,25 +61,26 @@ model Employee {
     phoneNumber String
     beginDate DateTime
     userId    String   @unique
-    user      User     @relation(fields: [userId], references: [id])
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
 
 model Product {
-    SKU            String          @unique
-    productName    String
-    purchasePrice  Int
-    sellingPrice   Int
-    image          String          @db.Text
-    categoryId     String
-    category       Category        @relation(fields: [categoryId], references: [id])
-    invoiceDetails InvoiceDetail[]
-    inventoryId    String
-    inventory      Inventory       @relation(fields: [inventoryId], references: [id])
-    feedbacks      Feedback[]
-    createdAt      DateTime        @default(now())
-    updatedAt      DateTime        @updatedAt
+    SKU                String              @unique
+    productName        String
+    purchasePrice      Int
+    sellingPrice       Int
+    image              String              @db.Text
+    categoryId         String
+    category           Category            @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    inventories        Inventory[]
+    supplyOrdersDetail SupplyOrderDetail[]
+    supplierId         String
+    supplier           Supplier            @relation(fields: [supplierId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    DisplayedProduct   DisplayedProduct?
+    createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
 }
 
 model Category {
@@ -96,74 +96,110 @@ model Invoice {
     invoiceDate    DateTime
     totalPrice     Int
     status         Status          @default(PROCESSING)
+    address        String
     customerId     String
-    customer       Customer        @relation(fields: [customerId], references: [id])
+    customer       Customer        @relation(fields: [customerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     invoiceDetails InvoiceDetail[]
     createdAt      DateTime        @default(now())
     updatedAt      DateTime        @updatedAt
 }
 
 model InvoiceDetail {
-    id         String   @id @default(cuid())
-    quantity   Int
-    totalPrice Int
-    invoiceId  String
-    invoice    Invoice  @relation(fields: [invoiceId], references: [id])
-    productSKU String
-    product    Product  @relation(fields: [productSKU], references: [SKU])
-    createdAt  DateTime @default(now())
-    updatedAt  DateTime @updatedAt
+    id                 String           @id @default(cuid())
+    quantity           Int
+    totalPrice         Int
+    invoiceId          String
+    invoice            Invoice          @relation(fields: [invoiceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    displayedProductId String
+    displayedProduct   DisplayedProduct @relation(fields: [displayedProductId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    createdAt          DateTime         @default(now())
+    updatedAt          DateTime         @updatedAt
 }
 
 model Supplier {
-    id               String        @id @default(cuid())
-    supplierName     String
-    address          String
-    email            String
-    phoneNumber      String
-    contactPerson    String
-    productsSupplied String[]
-    SupplyOrders     SupplyOrder[]
-    createdAt        DateTime      @default(now())
-    updatedAt        DateTime      @updatedAt
+    id            String        @id @default(cuid())
+    supplierName  String
+    address       String
+    email         String
+    phoneNumber   String
+    contactPerson String
+    products      Product[]
+    SupplyOrders  SupplyOrder[]
+    createdAt     DateTime      @default(now())
+    updatedAt     DateTime      @updatedAt
 }
 
 model SupplyOrder {
-    id              String   @id @default(cuid())
-    orderDate       DateTime
-    status          Status   @default(PROCESSING)
-    items           String[]
-    quantity        Int[]
-    totalAmount     Int
-    shippingAddress String
-    supplierId      String
-    supplier        Supplier @relation(fields: [supplierId], references: [id])
-    createdAt       DateTime @default(now())
-    updatedAt       DateTime @updatedAt
+    id                 String              @id @default(cuid())
+    orderDate          DateTime
+    status             Status              @default(PROCESSING)
+    totalPrice         Int
+    shippingAddress    String
+    supplierId         String
+    supplier           Supplier            @relation(fields: [supplierId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    supplyOrdersDetail SupplyOrderDetail[]
+    createdAt          DateTime            @default(now())
+    updatedAt          DateTime            @updatedAt
+}
+
+model SupplyOrderDetail {
+    id            String      @id @default(cuid())
+    productSKU    String
+    product       Product     @relation(fields: [productSKU], references: [SKU], onDelete: Cascade, onUpdate: Cascade)
+    supplyOrder   SupplyOrder @relation(fields: [supplyOrderId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    supplyOrderId String
+    quantity      Int
+    totalPrice    Int
+}
+
+model Warehouse {
+    id        String      @id @default(cuid())
+    name      String
+    location  String
+    products  Inventory[]
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
 }
 
 model Inventory {
-    id       String    @id @default(cuid())
-    quantity Int
-    products Product[]
+    id          String    @id @default(cuid())
+    quantity    Int
+    wareHouse   Warehouse @relation(fields: [wareHouseId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    wareHouseId String
+    productSKU  String
+    product     Product   @relation(fields: [productSKU], references: [SKU], onDelete: Cascade, onUpdate: Cascade)
+    createdAt   DateTime  @default(now())
+    updatedAt   DateTime  @updatedAt
 }
 
 model Feedback {
-    id         String   @id @default(cuid())
-    content    String
-    rating     Rating   @default(ONE)
-    customerId String
-    customer   Customer @relation(fields: [customerId], references: [id])
-    productSKU String
-    product    Product  @relation(fields: [productSKU], references: [SKU])
+    id                 String           @id @default(cuid())
+    content            String
+    rating             Rating           @default(ONE)
+    customerId         String
+    customer           Customer         @relation(fields: [customerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    displayedProductId String
+    displayedProduct   DisplayedProduct @relation(fields: [displayedProductId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model VerifiedEmail {
     id        Int      @id @default(autoincrement())
     email     String
     token     String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    userId    String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    user      User     @relation(fields: [userId], references: [id])
-    userId    String   @unique
+}
+
+model DisplayedProduct {
+    id             String          @id @default(cuid())
+    quantity       Int
+    sellingPrice   Int
+    product        Product         @relation(fields: [productId], references: [SKU], onDelete: Cascade, onUpdate: Cascade)
+    productId      String          @unique
+    feedbacks      Feedback[]
+    invoiceDetails InvoiceDetail[]
+    createdAt      DateTime        @default(now())
+    updatedAt      DateTime        @updatedAt
 }

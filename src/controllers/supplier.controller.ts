@@ -54,14 +54,5 @@ class SupplierController {
             next(error)
         }
     }
-    async getProductsSupplied (req: Request, res: Response, next:NextFunction){
-        try {
-            const id : string = req.params.id 
-            const result = await this.supplierService.getProductsSupplied(id)
-            res.status(200).json(result)
-        } catch (error : unknown) {
-            next(error)
-        }
-    }
 }
 export default SupplierController
