@@ -10,6 +10,9 @@ class ProductService {
     async create(data : Product, file : Express.Multer.File | undefined) : Promise<Product | null> {
         return await this.productRepository.create(data, file)
     }
+    async getList() : Promise<Product[] | null> {
+        return await this.productRepository.getList()
+    }
     async findProductsBySupplier(supplierId : string) : Promise<Product[] | null>{
         return await this.productRepository.findProductsBySupplier(supplierId)
     }

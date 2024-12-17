@@ -17,6 +17,16 @@ class ProductController {
             next(error)
         }
     }
+
+    async getList(req: Request, res: Response, next: NextFunction){
+        try {
+            const list = await this.productService.getList()
+            res.status(200).json(list)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
+
     async findProductsBySupplier(req : Request, res: Response, next: NextFunction){
         try {
             const list = await this.productService.findProductsBySupplier(req.params.supplierId)

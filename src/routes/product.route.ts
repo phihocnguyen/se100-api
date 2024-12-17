@@ -11,6 +11,7 @@ class ProductRoute {
         this.router = Router()
         this.router.post('/', upload.single('image') ,this.productController.create.bind(this.productController))
         this.router.get('/get-product/:supplierId', this.productController.findProductsBySupplier.bind(this.productController))
+        this.router.get('/', this.productController.getList.bind(this.productController))
     }
 }
 export default ProductRoute

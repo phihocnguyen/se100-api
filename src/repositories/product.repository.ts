@@ -23,6 +23,10 @@ class ProductRepository {
         )
         return newProduct
     }
+    async getList() : Promise<Product[] | null> {
+        const list = await db.product.findMany()
+        return list
+    }
     async findProductsBySupplier(supplierId : string) : Promise<Product[] | null>{
         const list = await db.product.findMany(
             {
