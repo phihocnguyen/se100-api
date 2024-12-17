@@ -8,8 +8,22 @@ class ProductController {
         this.productService = new ProductService()
     }
     async create(req: Request, res: Response, next: NextFunction){
-        const newProduct = await this.productService.create(req.body)
-        res.status(201).json(newProduct)
+        try {
+            req.body.purchasePrice = parseInt(req.body.purchasePrice)
+            req.body.sellingPrice = parseInt(req.body.sellingPrice)
+            const newProduct = await this.productService.create(req.body, req.file)
+            res.status(201).json(newProduct)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
+    async findProductsBySupplier(req : Request, res: Response, next: NextFunction){
+        try {
+            const list = await this.productService.findProductsBySupplier(req.params.supplierId)
+            res.status(200).json(list)
+        } catch (error : unknown) {
+            next(error)
+        }
     }
 }
 export default ProductController

@@ -1,5 +1,6 @@
 import { Router } from "express"
 import ProductController from "../controllers/product.controller"
+import upload from "../middleware/multer"
 
 class ProductRoute {
     private readonly productController : ProductController 
@@ -8,7 +9,8 @@ class ProductRoute {
     constructor() {
         this.productController = new ProductController()
         this.router = Router()
-        this.router.post('/', this.productController.create.bind(this.productController))
+        this.router.post('/', upload.single('image') ,this.productController.create.bind(this.productController))
+        this.router.get('/get-product/:supplierId', this.productController.findProductsBySupplier.bind(this.productController))
     }
 }
 export default ProductRoute
