@@ -15,5 +15,14 @@ class CategoryController {
             next(error)
         }
     }
+
+    async getCategoryList(req: Request, res: Response, next: NextFunction) {
+        try {
+            const list = await this.categoryService.getCategoryList()
+            res.status(200).json(list)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
 }
 export default CategoryController

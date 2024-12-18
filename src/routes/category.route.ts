@@ -9,6 +9,7 @@ class CategoryRoute {
         this.categoryController = new CategoryController()
         this.router = Router()
         this.router.post('/', this.categoryController.create.bind(this.categoryController))
+        this.router.get('/', this.categoryController.getCategoryList.bind(this.categoryController))
     }
 }
 export default CategoryRoute

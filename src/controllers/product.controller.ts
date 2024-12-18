@@ -11,7 +11,7 @@ class ProductController {
         try {
             req.body.purchasePrice = parseInt(req.body.purchasePrice)
             req.body.sellingPrice = parseInt(req.body.sellingPrice)
-            const newProduct = await this.productService.create(req.body, req.file)
+            const newProduct = await this.productService.create(req.body, req.files)
             res.status(201).json(newProduct)
         } catch (error : unknown) {
             next(error)
@@ -34,6 +34,24 @@ class ProductController {
         } catch (error : unknown) {
             next(error)
         }
+    }
+    async getProductBySKU(req: Request, res: Response, next: NextFunction){
+        try {
+            const product = await this.productService.getProductBySKU(req.params.SKU)
+            res.status(200).json(product)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
+    async update(req: Request, res: Response, next: NextFunction) {
+        try {
+            if(req.body.purchasePrice) req.body.purchasePrice = parseInt(req.body.purchasePrice)
+            if(req.body.sellingPrice)  req.body.sellingPrice = parseInt(req.body.sellingPrice)
+            const updatedProduct = await this.productService.update(req.body, req.files, req.params.SKU)
+            res.status(200).json(updatedProduct)
+        } catch (error : unknown) {
+            next(error)
+        } 
     }
 }
 export default ProductController

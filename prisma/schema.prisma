@@ -75,6 +75,8 @@ model Product {
     featuresImages     String[]
     categoryId         String
     category           Category            @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    brand              String
+    description        String
     inventories        Inventory[]
     supplyOrdersDetail SupplyOrderDetail[]
     supplierId         String
