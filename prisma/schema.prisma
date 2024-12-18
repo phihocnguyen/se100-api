@@ -72,8 +72,11 @@ model Product {
     purchasePrice      Int
     sellingPrice       Int
     image              String              @db.Text
+    featuresImages     String[]
     categoryId         String
     category           Category            @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    brand              String
+    description        String
     inventories        Inventory[]
     supplyOrdersDetail SupplyOrderDetail[]
     supplierId         String
@@ -87,8 +90,18 @@ model Category {
     id           String    @id @default(cuid())
     categoryName String
     products     Product[]
+    Brand        Brand[]
     createdAt    DateTime  @default(now())
     updatedAt    DateTime  @updatedAt
+}
+
+model Brand {
+    id         String   @id @default(cuid())
+    brandName  String
+    categoryId String
+    category   Category @relation(fields: [categoryId], references: [id])
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
 }
 
 model Invoice {

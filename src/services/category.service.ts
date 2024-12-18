@@ -10,5 +10,8 @@ class CategoryService {
     async create (data: Category) : Promise<Category | null> {
         return await this.categoryRepository.create(data)
     }
+    async getCategoryList () : Promise<Category[] | null> {
+        return await this.categoryRepository.getCategoryList()
+    }
 }
 export default CategoryService

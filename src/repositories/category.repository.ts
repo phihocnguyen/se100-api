@@ -12,6 +12,10 @@ class CategoryRepository {
         )
         return newCategory
     }
+    async getCategoryList() : Promise<Category[] | null> {
+        const list = await db.category.findMany()
+        return list
+    }
 }
 
 export default CategoryRepository
