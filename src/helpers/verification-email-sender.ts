@@ -20,6 +20,4 @@ const sendVerificationEmail = async (email: string, token: string) => {
   })
 }
 
-sendVerificationEmail("ngdm271@gmail.com", "123");
-
 export default sendVerificationEmail
