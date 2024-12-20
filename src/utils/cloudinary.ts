@@ -1,5 +1,5 @@
 import cloudinary from "cloudinary"
-require('dotenv').config({path: '../../.env'})
+require('dotenv').config()
 
 
 const v2Cloudinary = cloudinary.v2
