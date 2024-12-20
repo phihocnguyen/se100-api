@@ -27,7 +27,13 @@ class EmployeeRepository {
         return null
     }
     async getAllEmployees () : Promise<Employee[] | null> {
-        const result = await db.employee.findMany()
+        const result = await db.employee.findMany(
+            {
+                include: {
+                    user: true
+                }
+            }
+        )
         return result
     }
 

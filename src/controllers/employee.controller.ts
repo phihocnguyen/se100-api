@@ -18,10 +18,11 @@ class EmployeeController {
             const employeeData : any = {
                 fullName: req.body.fullName,
                 phoneNumber: req.body.phoneNumber,
-                beginDate: req.body.beginDate
+                beginDate: new Date(req.body.beginDate).toISOString()
             }
-            const newCustomer = await this.employeeService.create(userData, employeeData, req.file)
-            res.status(201).json(newCustomer)
+
+            const newEmployee = await this.employeeService.create(userData, employeeData, req.file)
+            res.status(201).json(newEmployee)
         } catch (error : unknown) {
             next(error)
         } 
