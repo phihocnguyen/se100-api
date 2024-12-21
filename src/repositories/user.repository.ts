@@ -92,6 +92,29 @@ class UserRepository {
         return newUserWithToken
     }
 
+    async createOAuth(data: any) : Promise<User | boolean> {
+        const salt = bcrypt.genSaltSync(10)
+        const existUser = await db.user.findFirst(
+            {
+                where: {
+                    email: data.email
+                }
+            }
+        )
+        if (existUser) return false
+        const newUser : User = await db.user.create(
+            {
+                data: {
+                    ...data,
+                    password: bcrypt.hashSync(data.email, salt),
+                    emailVerified: new Date(),
+                    isOAuth: true
+                }
+            }
+        )
+        return newUser;
+    }
+
     async edit(id: string, data : User, file : Express.Multer.File | undefined) : Promise<User | null> {
         const existUser = this.findByEmail(data.email)
         if (file) {

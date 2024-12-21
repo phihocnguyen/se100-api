@@ -25,6 +25,9 @@ class UserService {
     async create(data: User, file : Express.Multer.File | undefined) : Promise<newUserType | boolean> {
         return this.userRepository.create(data, file)
     }
+    async createOAuth(data: any) : Promise<User | boolean> {
+        return this.userRepository.createOAuth(data);
+    }
     async edit(id : string, data: User, file : Express.Multer.File | undefined) : Promise<User | null> {
         return this.userRepository.edit(id, data, file)
     }
