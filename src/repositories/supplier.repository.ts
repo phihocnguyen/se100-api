@@ -22,7 +22,7 @@ class SupplierRepository {
                     ...data
                 }
             }
-        )
+    )
         return result
     }
 
@@ -32,7 +32,16 @@ class SupplierRepository {
     }
 
     async getAllSuppliers () : Promise<Supplier[] | null> {
-        const result = await db.supplier.findMany()
+        const result = await db.supplier.findMany(
+            {
+                include: {
+                    products: true
+                },
+                orderBy: {
+                    createdAt: 'asc'
+                }
+            }
+        )
         return result
     }
 
@@ -41,6 +50,9 @@ class SupplierRepository {
             {
                 where: {
                     id
+                },
+                include: {
+                    products: true
                 }
             }
         )
