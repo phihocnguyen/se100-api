@@ -10,6 +10,9 @@ class DisplayedProductService {
     async create(data : DisplayedProduct) : Promise<DisplayedProduct | null> {
         return await this.displayedProductRepository.create(data)
     }
+    async getList() : Promise<DisplayedProduct[] | null> {
+        return await this.displayedProductRepository.getList()
+    }
 }
 
 export default DisplayedProductService

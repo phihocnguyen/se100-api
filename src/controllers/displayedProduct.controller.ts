@@ -16,6 +16,14 @@ class DisplayedProductController {
             next(error)
         }
     }
+    async getList(req : Request, res : Response, next : NextFunction){
+        try {
+            const list = await this.displayedProductService.getList()
+            res.status(201).json(list)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
 }
 
 export default DisplayedProductController

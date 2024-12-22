@@ -14,6 +14,7 @@ class ProductRoute {
         this.router.get('/', this.productController.getList.bind(this.productController))
         this.router.get('/:SKU', this.productController.getProductBySKU.bind(this.productController))
         this.router.patch('/:SKU', upload.array('images', 10) ,this.productController.update.bind(this.productController))
+        this.router.get('/filter-product/:brand', this.productController.getProductByBrand.bind(this.productController))
     }
 }
 export default ProductRoute

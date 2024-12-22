@@ -53,5 +53,13 @@ class ProductController {
             next(error)
         } 
     }
+    async getProductByBrand(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.productService.getProductByBrand(req.params.brand)
+            res.status(200).json(result)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
 }
 export default ProductController

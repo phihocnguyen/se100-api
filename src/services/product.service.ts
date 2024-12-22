@@ -1,6 +1,7 @@
 import { Product } from "@prisma/client"
 import ProductRepository from "../repositories/product.repository"
 
+
 class ProductService {
     private readonly productRepository : ProductRepository
 
@@ -21,6 +22,12 @@ class ProductService {
     }
     async update(data: Product, files: any, SKU: string) : Promise<Product | null> {
         return await this.productRepository.update(data, files, SKU)
+    }
+    async getProductByBrand(data: string ) : Promise<Product[] | null> {
+        return await this.productRepository.getProductByBrand(data)
+    }
+    async updateQuantity(SKU : string, quantity: number) : Promise<Boolean | null> {
+        return await this.productRepository.updateQuantity(SKU, quantity)
     }
 }
 export default ProductService

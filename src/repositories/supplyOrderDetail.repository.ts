@@ -12,5 +12,9 @@ class SupplyOrderDetailRepository {
         )
         return result
     }
-}
+    async getList() : Promise<SupplyOrderDetail[] | null> {
+        const result = await db.supplyOrderDetail.findMany()
+        return result
+    }
+} 
 export default SupplyOrderDetailRepository

@@ -13,7 +13,13 @@ class DisplayedProductRepository {
         return newDP
     }
     async getList() : Promise<DisplayedProduct[] | null> {
-        const list = await db.displayedProduct.findMany()
+        const list = await db.displayedProduct.findMany(
+            {
+                include: {
+                    product: true
+                }
+            }
+        )
         return list
     }
 }

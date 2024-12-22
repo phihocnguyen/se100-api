@@ -2,6 +2,7 @@ import { Product } from "@prisma/client";
 import db from "../config/db";
 import v2Cloudinary from "../utils/cloudinary";
 
+
 class ProductRepository {
     
     async create(data : Product, files : any) : Promise<Product | null>{
@@ -22,7 +23,8 @@ class ProductRepository {
                 data: {
                     ...data,
                     image: url[0] || '',
-                    featuresImages: url.slice(1) || []
+                    featuresImages: url.slice(1) || [],
+                    quantity: 0
                 }
             }
         )
@@ -97,6 +99,32 @@ class ProductRepository {
             }
         )
         return result
+    }
+
+    async getProductByBrand(data : string) : Promise<Product[] | null> {
+        const result = await db.product.findMany(
+            {
+                where: {
+                    brand: data
+                }
+            }
+        )
+        return result
+    }
+
+    async updateQuantity(SKU : string, quantity : number) : Promise<Boolean | null> {
+        const result = await db.product.update(
+            {
+                where: {
+                    SKU
+                },
+                data: {
+                    quantity: quantity
+                }
+            }
+        )
+        if (!result) return null
+        return true
     }
 }
 export default ProductRepository

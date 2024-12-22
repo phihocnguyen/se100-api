@@ -9,6 +9,7 @@ class DisplayedProductRoute {
         this.displayedProductController = new DisplayedProductController()
         this.router = Router()
         this.router.post('/', this.displayedProductController.create.bind(this.displayedProductController))
+        this.router.get('/', this.displayedProductController.getList.bind(this.displayedProductController))
     }
 }
 
