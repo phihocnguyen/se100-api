@@ -4,17 +4,27 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import IndexRoute from "./routes";
 import errorHandler from "./helpers/error-handler";
+import cookieSession from "cookie-session";
+import passport from "passport";
+import "./helpers/passport";
 
 class App {
   private readonly app: Application;
   private readonly port: number;
-  private readonly corsOptions : object
+  private readonly corsOptions : object;
+  private readonly cookieOptions : object;
+
   constructor() {
     this.app = express();
     this.port = parseInt(process.env.PORT || "3000");
     this.corsOptions = {
       origin: 'http://localhost:5173',
       credentials: true
+    }
+    this.cookieOptions = {
+      name: "session",
+      keys: ["user"],
+      maxAge: 86400
     }
     this.init();
   }
@@ -26,6 +36,9 @@ class App {
   }
 
   private initMiddlewares() {
+    this.app.use(cookieSession(this.cookieOptions));
+    this.app.use(passport.initialize());
+    this.app.use(passport.session());
     this.app.use(cors(this.corsOptions));
     this.app.use(helmet());
     this.app.use(express.json());

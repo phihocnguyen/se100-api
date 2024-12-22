@@ -12,7 +12,6 @@ class EmployeeRepository {
 
     async create(userData : any, employeeData: any, file: Express.Multer.File | undefined) : Promise<Employee | null> {
         const newUser : any = await this.userRepository.create(userData, file)
-        console.log(newUser)
         if (newUser) {
             const newEmployee = await db.employee.create(
                 {

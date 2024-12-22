@@ -2,7 +2,9 @@ import { Customer } from "@prisma/client";
 import db from "../config/db";
 
 class CustomerRepository {
-    async create(data : Customer) : Promise<Customer | null> {
+    // login-success: create user
+    // create customer
+    async create(data : any) : Promise<Customer | null> {
         const newCustomer = await db.customer.create(
             {
                 data: {

@@ -33,6 +33,7 @@ model User {
     id            String         @id @default(cuid())
     email         String
     password      String
+    isOAuth       Boolean?
     role          UserRole
     emailVerified DateTime?
     isOAuth Boolean?
