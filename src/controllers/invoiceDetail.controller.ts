@@ -16,6 +16,14 @@ class InvoiceDetailController {
             next(error)
         }
     }
+    async getList(req: Request, res: Response, next: NextFunction) {
+        try {
+            const list = await this.invoiceDetailService.getList(req.params.invoiceId)
+            res.status(200).json(list)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
 }
 
 export default InvoiceDetailController

@@ -12,5 +12,27 @@ class InvoiceDetailRepository {
         )
         return newInvoiceDetail
     }
+    async getList(invoiceId : string) : Promise<InvoiceDetail[] | null> {
+        const list = await db.invoiceDetail.findMany(
+            {
+                where: {
+                    invoiceId: invoiceId
+                },
+                include: {
+                    displayedProduct: {
+                        include: {
+                            product: {
+                                select: {
+                                    image: true,
+                                    productName: true
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        )
+        return list
+    }
 }
 export default InvoiceDetailRepository

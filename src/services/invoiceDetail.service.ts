@@ -11,5 +11,8 @@ class InvoiceDetailService {
     async create(data : InvoiceDetail) : Promise<InvoiceDetail | null> {
         return await this.invoiceDetailRepository.create(data)
     }
+    async getList(invoiceId : string) : Promise<InvoiceDetail[] | null> {
+        return await this.invoiceDetailRepository.getList(invoiceId)
+    }
 }
 export default InvoiceDetailService

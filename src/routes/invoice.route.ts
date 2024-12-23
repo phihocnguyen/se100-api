@@ -8,6 +8,8 @@ class InvoiceRoute {
         this.invoiceController = new InvoiceController()
         this.router = Router()
         this.router.post('/', this.invoiceController.create.bind(this.invoiceController))
+        this.router.get('/', this.invoiceController.getList.bind(this.invoiceController))
+        this.router.get('/filter-list/:type', this.invoiceController.filterList.bind(this.invoiceController))
     }
 
 

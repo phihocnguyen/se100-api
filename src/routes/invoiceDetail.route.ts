@@ -8,6 +8,7 @@ class InvoiceDetailRoute {
         this.invoiceDetailController = new InvoiceDetailController()
         this.router = Router()
         this.router.post('/', this.invoiceDetailController.create.bind(this.invoiceDetailController))
+        this.router.get('/:invoiceId', this.invoiceDetailController.getList.bind(this.invoiceDetailController))
     }
 
 

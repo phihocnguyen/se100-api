@@ -1,4 +1,4 @@
-import { Invoice } from "@prisma/client";
+import { Invoice, Status } from "@prisma/client";
 import db from "../config/db";
 
 class InvoiceRepository {
@@ -11,6 +11,27 @@ class InvoiceRepository {
             }
         )
         return newInvoice
+    }
+    async getList(): Promise<Invoice[] | null> {
+        const list = await db.invoice.findMany({
+            orderBy: {
+                createdAt: 'asc', // Sắp xếp tăng dần theo createdAt
+            },
+        });
+        return list;
+    }
+    async filterList(type : Status) : Promise<Invoice[] | null> {
+        const list = await db.invoice.findMany(
+            {
+                where: {
+                    status: type
+                },
+                orderBy: {
+                    createdAt: 'asc'
+                }
+            }
+        )
+        return list
     }
 }
 
