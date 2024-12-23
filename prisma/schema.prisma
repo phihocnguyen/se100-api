@@ -14,14 +14,6 @@ enum UserRole {
     DEEMPLOYEE
 }
 
-enum Rating {
-    ONE
-    TWO
-    THREE
-    FOR
-    FIVE
-}
-
 enum Status {
     PROCESSING
     SHIPPING
@@ -77,6 +69,7 @@ model Product {
     categoryId         String
     category           Category            @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     brand              String
+    quantity           Int?
     description        String
     inventories        Inventory[]
     supplyOrdersDetail SupplyOrderDetail[]
@@ -189,9 +182,10 @@ model Inventory {
 model Feedback {
     id                 String           @id @default(cuid())
     content            String
-    rating             Rating           @default(ONE)
+    rating             Int              
     customerId         String
     customer           Customer         @relation(fields: [customerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    createdAt   DateTime  @default(now())
     displayedProductId String
     displayedProduct   DisplayedProduct @relation(fields: [displayedProductId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
