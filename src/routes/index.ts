@@ -10,6 +10,7 @@ import CategoryRoute from "./category.route";
 import BrandRoute from "./brand.route";
 import EmployeeRoute from "./employee.route";
 import AuthRoute from "./auth.route";
+import FeedbackRoute from "./feedback.route";
 
 class IndexRoute {
     public readonly router : Router
@@ -24,6 +25,7 @@ class IndexRoute {
     private readonly brandRoute : BrandRoute
     private readonly employeeRoute : EmployeeRoute
     private readonly authRoute : AuthRoute;
+    private readonly feedbackRoute : FeedbackRoute;
 
     constructor () {
         this.router = Router()
@@ -38,6 +40,7 @@ class IndexRoute {
         this.brandRoute = new BrandRoute()
         this.employeeRoute = new EmployeeRoute()
         this.authRoute = new AuthRoute();
+        this.feedbackRoute = new FeedbackRoute();
         this.initRoutes()
     }
 
@@ -53,6 +56,7 @@ class IndexRoute {
         this.router.use('/brand', this.brandRoute.router)
         this.router.use('/employee', this.employeeRoute.router)
         this.router.use('/auth', this.authRoute.router)
+        this.router.use('/feedback', this.feedbackRoute.router);
     }
 }
 export default new IndexRoute().router
