@@ -24,6 +24,14 @@ class DisplayedProductController {
             next(error)
         }
     }
+    async getDetail(req: Request, res: Response, next: NextFunction){
+        try {
+            const detailProduct = await this.displayedProductService.getDetail(req.params.SKU)
+            res.status(200).json(detailProduct)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
 }
 
 export default DisplayedProductController

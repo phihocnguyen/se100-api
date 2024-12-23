@@ -10,6 +10,7 @@ class DisplayedProductRoute {
         this.router = Router()
         this.router.post('/', this.displayedProductController.create.bind(this.displayedProductController))
         this.router.get('/', this.displayedProductController.getList.bind(this.displayedProductController))
+        this.router.get('/:SKU', this.displayedProductController.getDetail.bind(this.displayedProductController))
     }
 }
 

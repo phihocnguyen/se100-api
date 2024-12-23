@@ -22,6 +22,16 @@ class DisplayedProductRepository {
         )
         return list
     }
+    async getDetail(SKU : string) : Promise<DisplayedProduct[] | null> {
+        const detailProduct = await db.displayedProduct.findMany(
+            {
+                where: {
+                    productId: SKU
+                }
+            }
+        )
+        return detailProduct
+    }
 }
 
 export default DisplayedProductRepository

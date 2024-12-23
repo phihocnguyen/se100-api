@@ -13,6 +13,9 @@ class DisplayedProductService {
     async getList() : Promise<DisplayedProduct[] | null> {
         return await this.displayedProductRepository.getList()
     }
+    async getDetail(SKU : string) : Promise<DisplayedProduct[] | null> {
+        return await this.displayedProductRepository.getDetail(SKU)
+    }
 }
 
 export default DisplayedProductService
