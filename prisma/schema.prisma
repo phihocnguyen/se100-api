@@ -36,7 +36,6 @@ model User {
     isOAuth       Boolean?
     role          UserRole
     emailVerified DateTime?
-    isOAuth Boolean?
     image         String?        @db.Text
     customer      Customer?
     employee      Employee?
