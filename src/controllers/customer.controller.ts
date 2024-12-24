@@ -34,6 +34,15 @@ class CustomerController {
             next(error)
         }
     }
+    async getCustomerByUser(req : Request, res: Response, next: NextFunction) {
+        try {
+            const userId : string = req.params.userId 
+            const result = await this.customerService.getCustomerByUser(userId)
+            res.status(200).json(result)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
     async edit(req: Request, res: Response, next: NextFunction) {
         try {
             const id : string = req.params.id

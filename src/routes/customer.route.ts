@@ -13,6 +13,7 @@ class CustomerRoute {
         this.router.post('/',this.customerController.create.bind(this.customerController))
         this.router.get('/',this.customerController.getAllCustomers.bind(this.customerController))
         this.router.get('/:id',this.customerController.getDetailCustomer.bind(this.customerController))
+        this.router.get('/get-by-user/:userId', this.customerController.getCustomerByUser.bind(this.customerController))
         this.router.patch('/:id',this.customerController.edit.bind(this.customerController))
         this.router.delete('/:id',this.customerController.delete.bind(this.customerController))
     }

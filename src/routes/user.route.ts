@@ -12,7 +12,7 @@ class UserRoute {
         this.router.post('/', upload.single('image') ,this.userController.create.bind(this.userController))
         this.router.get('/', this.userController.getAllUsers.bind(this.userController))
         this.router.delete('/:id', this.userController.delete.bind(this.userController))
-        this.router.patch('/:id', this.userController.edit.bind(this.userController))
+        this.router.patch('/:id', upload.single('image'), this.userController.edit.bind(this.userController))
         this.router.post('/login', this.userController.login.bind(this.userController))
         this.router.get('/verify', this.userController.verifyEmail.bind(this.userController))
     }

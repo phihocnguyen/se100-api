@@ -19,6 +19,10 @@ class CustomerService {
         const result = await this.customerRepository.getDetailCustomer(id)
         return result
     }
+    async getCustomerByUser(userId : string) : Promise<Customer | null> {
+        const result = await this.customerRepository.getCustomerByUser(userId)
+        return result
+    }
     async edit (id : string, data : Customer) : Promise<Customer | null> {
         const result = await this.customerRepository.edit(id, data)
         return result

@@ -30,6 +30,15 @@ class CustomerRepository {
         return result
     } 
 
+    async getCustomerByUser (userId : string) : Promise<Customer | null> {
+        const result = await db.customer.findFirst({
+            where: {
+                userId: userId
+            }
+        })
+        return result
+    }
+
     async edit (id: string, data: Customer) : Promise<Customer | null> {
         const result = await db.customer.update(
             {
