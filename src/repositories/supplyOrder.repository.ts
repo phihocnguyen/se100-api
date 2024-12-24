@@ -1,11 +1,11 @@
 import { Product, Status, SupplyOrder } from "@prisma/client";
 import db from "../config/db";
-import ProductRepository from "./product.repository";
+import InventoryRepository from "./inventory.repository";
 
 class SupplyOrderRepository {
-    private readonly productRepository : ProductRepository
-    constructor(productRepository : ProductRepository) {
-        this.productRepository = productRepository
+    private readonly inventoryRepository : InventoryRepository
+    constructor(inventoryRepository : InventoryRepository) {
+        this.inventoryRepository = inventoryRepository
     }
 
     async create(data : SupplyOrder) : Promise<SupplyOrder | null> {
@@ -56,7 +56,20 @@ class SupplyOrderRepository {
         )
         if (status === 'COMPLETED') {
             for (let i = 0; i < supplyOrder.supplyOrdersDetail.length; i++){
-                await this.productRepository.updateQuantity(supplyOrder.supplyOrdersDetail[i].productSKU, supplyOrder.supplyOrdersDetail[i].quantity)
+                // await this.productRepository.updateQuantity(supplyOrder.supplyOrdersDetail[i].productSKU, supplyOrder.supplyOrdersDetail[i].quantity)
+                const existInventory = await this.inventoryRepository.getByProduct(supplyOrder.supplyOrdersDetail[i].productSKU)
+                if (existInventory) {
+                    await this.inventoryRepository.update(existInventory.id, {
+                        quantity: existInventory.quantity + supplyOrder.supplyOrdersDetail[i].quantity
+                    })
+                    
+                } else {
+                    await this.inventoryRepository.create({
+                        wareHouseId: "cm530kgcq0002uslvy0sxw5ji",
+                        productSKU: supplyOrder.supplyOrdersDetail[i].productSKU,
+                        quantity: supplyOrder.supplyOrdersDetail[i].quantity
+                    })
+                }
             }
         }
         return result

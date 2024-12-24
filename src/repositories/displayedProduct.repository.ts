@@ -3,6 +3,20 @@ import db from "../config/db";
 
 class DisplayedProductRepository {
     async create(data : DisplayedProduct) : Promise<DisplayedProduct | null> {
+        const existDP = await this.getDetail(data.productId)
+        if (existDP) {
+            return await db.displayedProduct.update(
+                {
+                    where: {
+                        id: existDP[0].id
+                    },
+                    data: {
+                        ...data,
+                        quantity: existDP[0].quantity + data.quantity
+                    }
+                }
+            )
+        }
         const newDP = await db.displayedProduct.create(
             {
                 data: {

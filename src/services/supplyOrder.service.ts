@@ -1,13 +1,13 @@
 import { Status, SupplyOrder } from "@prisma/client"
 import SupplyOrderRepository from "../repositories/supplyOrder.repository"
-import ProductRepository from "../repositories/product.repository"
+import InventoryRepository from "../repositories/inventory.repository"
 
 class SupplyOrderService {
     private readonly supplyOrderRepository : SupplyOrderRepository
-    private readonly productRepository : ProductRepository
+    private readonly inventoryRepository : InventoryRepository
     constructor () {
-        this.productRepository = new ProductRepository()
-        this.supplyOrderRepository = new SupplyOrderRepository(this.productRepository)
+        this.inventoryRepository = new InventoryRepository()
+        this.supplyOrderRepository = new SupplyOrderRepository(this.inventoryRepository)
     }
 
     async create(data : SupplyOrder) : Promise<SupplyOrder | null> {
