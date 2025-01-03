@@ -32,5 +32,13 @@ class InventoryController {
             next(error)
         }
     }
+    async getList(req : Request, res: Response, next: NextFunction){
+        try {
+            const result = await this.inventoryService.getList()
+            res.status(200).json(result)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
 }
 export default InventoryController

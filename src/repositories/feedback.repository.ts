@@ -61,5 +61,20 @@ class FeedbackRepository {
         )
         return list
     }
+    async getAverageRating(productSKU : string) : Promise<Number | null> {
+        const avgRating = await db.feedback.aggregate({
+            where: {
+                displayedProduct: {
+                    product: {
+                        SKU: productSKU
+                    }
+                }
+            },
+            _avg: {
+                rating: true,
+            },
+        })
+        return Math.ceil(avgRating._avg.rating as number)
+    }
 }
 export default FeedbackRepository

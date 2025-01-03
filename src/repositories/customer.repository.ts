@@ -15,7 +15,13 @@ class CustomerRepository {
         return newCustomer
     }
     async getAllCustomers () : Promise<Customer[] | null> {
-        const result = await db.customer.findMany()
+        const result = await db.customer.findMany(
+            {
+                include: {
+                    user: true
+                }
+            }
+        )
         return result
     }
 

@@ -31,5 +31,13 @@ class FeedbackController {
             next(error)
         }
     }
+    async getAverageRating(req : any, res: Response, next: NextFunction) {
+        try {
+            const avg = await this.feedbackService.getAverageRating(req.params.produtSKU)
+            res.status(200).json(avg)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
 }
 export default FeedbackController

@@ -17,6 +17,9 @@ class InventoryService {
     async update(id : string, data : any) : Promise<Inventory | null> {
         return await this.inventoryRepository.update(id, data)
     }
+    async getList() : Promise<Inventory[] | null> {
+        return await this.inventoryRepository.getList()
+    }
 }
 
 export default InventoryService

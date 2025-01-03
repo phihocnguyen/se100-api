@@ -24,7 +24,9 @@ class ProductRepository {
                     ...data,
                     image: url[0] || '',
                     featuresImages: url.slice(1) || [],
-                    quantity: 0
+                    quantity: 0,
+                    camera: data.camera,
+                    rom: data.rom
                 }
             }
         )

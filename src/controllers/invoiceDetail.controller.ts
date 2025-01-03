@@ -11,7 +11,8 @@ class InvoiceDetailController {
     async create(req: Request, res: Response, next: NextFunction) {
         try {
             const newInvoiceDetail = await this.invoiceDetailService.create(req.body)
-            res.status(201).json(newInvoiceDetail)
+            if (!newInvoiceDetail) res.status(500).json('null')
+            else res.status(201).json(newInvoiceDetail)
         } catch (error : unknown) {
             next(error)
         }

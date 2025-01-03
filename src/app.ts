@@ -19,8 +19,8 @@ class App {
     this.port = parseInt(process.env.PORT || "3000");
     this.corsOptions = {
       origin: 'http://localhost:5173',
-      credentials: true
-    }
+      credentials: true,
+    };
     this.cookieOptions = {
       name: "session",
       keys: ["user"],
@@ -37,9 +37,9 @@ class App {
 
   private initMiddlewares() {
     this.app.use(cookieSession(this.cookieOptions));
+    this.app.use(cors(this.corsOptions));
     this.app.use(passport.initialize());
     this.app.use(passport.session());
-    this.app.use(cors(this.corsOptions));
     this.app.use(helmet());
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));

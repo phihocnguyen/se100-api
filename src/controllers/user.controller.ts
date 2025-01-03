@@ -1,15 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import { User } from "@prisma/client";
 import UserService from "../services/user.service";
-import sendVerificationEmail from "../helpers/verification-email-sender";
-import token from "../helpers/token";
 
+import { jwtDecode } from "jwt-decode"
+import { sendVerificationEmail } from "../helpers/verification-email-sender";
 class UserController {
     private readonly userService : UserService
     constructor () {
         this.userService = new UserService()
     }
-    async login(req: Request, res: Response) {
+    async login(req: Request, res: Response, next: NextFunction) {
         try {
             const {email, password} : {email: string, password: string} = req.body
             const result : any = await this.userService.login(email, password)
@@ -26,7 +26,7 @@ class UserController {
             }
             else res.status(401).json('Unauthorized')
         } catch (error: unknown) {
-            throw new Error(error as string)
+            next(error)
         }
     }
     async create(req: Request, res: Response, next: NextFunction){
@@ -82,6 +82,24 @@ class UserController {
             res.status(200).json(result)
         } catch (error : unknown){
             throw new Error(error as string)
+        }
+    }
+    async decode(req: Request, res: Response, next: NextFunction) {
+        try {
+            var cookies = req.headers.cookie;
+            const cookie = cookies?.split('; ')[0].split('=')[1] + '='
+            const data : any = jwtDecode(cookie as string, {header: true})
+            res.status(200).json(data?.passport?.user._json)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async logout(req: Request, res: Response, next:NextFunction) {
+        try {
+            res.clearCookie('token')
+            res.status(200).json({ message: 'Logout successful. Token cookie deleted.' });
+        } catch (error : unknown) {
+            next(error)
         }
     }
 }

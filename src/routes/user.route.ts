@@ -15,6 +15,9 @@ class UserRoute {
         this.router.patch('/:id', upload.single('image'), this.userController.edit.bind(this.userController))
         this.router.post('/login', this.userController.login.bind(this.userController))
         this.router.get('/verify', this.userController.verifyEmail.bind(this.userController))
+        this.router.get('/cookie', this.userController.decode.bind(this.userController))
+        this.router.get('/logout', this.userController.logout.bind(this.userController))
+        
     }
 }
 export default UserRoute

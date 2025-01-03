@@ -11,6 +11,8 @@ class DisplayedProductRoute {
         this.router.post('/', this.displayedProductController.create.bind(this.displayedProductController))
         this.router.get('/', this.displayedProductController.getList.bind(this.displayedProductController))
         this.router.get('/:SKU', this.displayedProductController.getDetail.bind(this.displayedProductController))
+        this.router.get('/search/filter/:category', this.displayedProductController.filter.bind(this.displayedProductController))
+        this.router.get('/search/price/:status', this.displayedProductController.filterPrice.bind(this.displayedProductController))
     }
 }
 

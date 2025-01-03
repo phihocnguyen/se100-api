@@ -139,7 +139,16 @@ class UserRepository {
                 }
             )
         }
-        return existUser
+        return db.user.update(
+                {
+                    where: {
+                        id: id
+                    },
+                    data: {
+                        ...data,
+                    }
+                }
+            )
     }
 
     async delete(id : string) : Promise<boolean> {
@@ -208,6 +217,10 @@ class UserRepository {
             }
         })
         return true
+    }
+
+    async decodeUser() : Promise<any> {
+        
     }
 
 }

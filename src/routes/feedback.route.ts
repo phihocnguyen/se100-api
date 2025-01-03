@@ -11,6 +11,7 @@ class FeedbackRoute {
         this.router.post('/', this.feedbackController.create.bind(this.feedbackController))
         this.router.get('/:productId', this.feedbackController.getList.bind(this.feedbackController))
         this.router.get('/rating/:rating', this.feedbackController.getListByRating.bind(this.feedbackController))
+        this.router.get('/avg-rating/:productSKU', this.feedbackController.getAverageRating.bind(this.feedbackController))
     }
 
 }

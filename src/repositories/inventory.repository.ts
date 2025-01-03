@@ -35,5 +35,16 @@ class InventoryRepository {
         )
         return result
     }
+    async getList() : Promise<Inventory[] | null> {
+        const result = await db.inventory.findMany(
+            {
+                include: {
+                    product: true ,
+                    wareHouse: true
+                }
+            }
+        )
+        return result
+    }
 }
 export default InventoryRepository

@@ -11,7 +11,8 @@ class InvoiceController {
 
     async create(req: Request, res: Response, next: NextFunction){
         try {
-            const newInvoice = await this.invoiceService.create(req.body)
+            req.body.totalPrice = parseInt(req.body.totalPrice)
+            const newInvoice = await this.invoiceService.create(req.body, req.file)
             res.status(201).json(newInvoice)
         } catch (error : unknown) {
             next(error)
@@ -28,6 +29,14 @@ class InvoiceController {
     async filterList(req: Request, res: Response, next: NextFunction){
         try {
             const list = await this.invoiceService.filterList(req.params.type as Status)
+            res.status(200).json(list)
+        } catch (error : unknown) {
+            next(error)
+        } 
+    }
+    async updateInvoice(req: Request, res: Response, next: NextFunction){
+        try {
+            const list = await this.invoiceService.updateInvoice(req.params.id, req.body.status)
             res.status(200).json(list)
         } catch (error : unknown) {
             next(error)

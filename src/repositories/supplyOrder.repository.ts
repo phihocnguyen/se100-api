@@ -65,7 +65,7 @@ class SupplyOrderRepository {
                     
                 } else {
                     await this.inventoryRepository.create({
-                        wareHouseId: "cm530kgcq0002uslvy0sxw5ji",
+                        wareHouseId: "cm5fipejf000jn5b2f3xieh9q",
                         productSKU: supplyOrder.supplyOrdersDetail[i].productSKU,
                         quantity: supplyOrder.supplyOrdersDetail[i].quantity
                     })

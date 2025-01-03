@@ -16,6 +16,9 @@ class FeedbackService {
     async getListByRating(rating : number, productId: string) : Promise<Feedback[]  | null>{
         return await this.feedbackRepository.getListByRating(rating, productId)
     }
+    async getAverageRating(productSKU: string) : Promise<Number | null> {
+        return await this.feedbackRepository.getAverageRating(productSKU)
+    }
 }
 
 export default FeedbackService

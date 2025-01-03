@@ -1,6 +1,7 @@
 import { Employee, User } from "@prisma/client";
 import db from "../config/db";
 import UserRepository from "./user.repository";
+import { sendMailEmployee } from "../helpers/verification-email-sender";
 
 
 class EmployeeRepository {
@@ -12,6 +13,16 @@ class EmployeeRepository {
 
     async create(userData : any, employeeData: any, file: Express.Multer.File | undefined) : Promise<Employee | null> {
         const newUser : any = await this.userRepository.create(userData, file)
+        await db.user.update(
+            {
+                where: {
+                    id: newUser.newUser.id
+                },
+                data: {
+                    emailVerified: new Date()
+                }
+            }
+        )
         if (newUser) {
             const newEmployee = await db.employee.create(
                 {
@@ -21,6 +32,7 @@ class EmployeeRepository {
                     }
                 }
             )
+            sendMailEmployee(userData.email, userData.password)
             return newEmployee
         }
         return null

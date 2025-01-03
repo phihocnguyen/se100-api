@@ -32,6 +32,22 @@ class DisplayedProductController {
             next(error)
         }
     }
+    async filter(req: Request, res: Response, next: NextFunction){
+        try {
+            const list = await this.displayedProductService.filter(req.params.category, req.query.brand as string, parseInt(req.query.camera as string), parseInt(req.query.rom as string))
+            res.status(200).json(list)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
+    async filterPrice(req: Request, res: Response, next: NextFunction){
+        try {
+            const list = await this.displayedProductService.filterPrice(req.params.status)
+            res.status(200).json(list)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
 }
 
 export default DisplayedProductController
