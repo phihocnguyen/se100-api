@@ -25,6 +25,9 @@ class SupplyOrderService {
     async updateStatus(id : string, status: Status) : Promise<SupplyOrder | null> {
         return this.supplyOrderRepository.updateStatus(id, status)
     }
+    async sendEmail(supplierId: string, supplyOrderId: string) : Promise<Boolean | null> {
+        return this.supplyOrderRepository.sendEmail(supplierId, supplyOrderId)
+    }
 }
 
 export default SupplyOrderService

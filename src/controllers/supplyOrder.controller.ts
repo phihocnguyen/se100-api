@@ -46,5 +46,13 @@ class SupplyOrderController {
             next(error)
         }
     }
+    async sendEmail(req: Request, res: Response, next: NextFunction) {
+        try {
+            const result = await this.supplyOrderService.sendEmail(req.body.supplierId, req.body.supplyOrderId)
+            res.status(200).json(result)
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
 }
 export default SupplyOrderController

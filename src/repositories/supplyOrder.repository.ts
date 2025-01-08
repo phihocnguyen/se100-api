@@ -1,6 +1,7 @@
 import { Product, Status, SupplyOrder } from "@prisma/client";
 import db from "../config/db";
 import InventoryRepository from "./inventory.repository";
+import { sendMailSupplier } from "../helpers/verification-email-sender";
 
 class SupplyOrderRepository {
     private readonly inventoryRepository : InventoryRepository
@@ -38,6 +39,9 @@ class SupplyOrderRepository {
             orderBy: {
               createdAt: 'asc',
             },
+            include: {
+                supplier: true
+            }
           });
           
         return result
@@ -74,6 +78,38 @@ class SupplyOrderRepository {
         }
         return result
     } 
+    async sendEmail (supplierId: string, supplyOrderId: string) : Promise<Boolean | null> {
+        const supplier = await db.supplier.findUnique(
+            {
+                where: {
+                    id: supplierId
+                }
+            }
+        )
+        if (!supplier) return false
+
+        const supplyOrder = await db.supplyOrder.findUnique(
+            {
+                where: {
+                    id: supplyOrderId
+                }
+            }
+        )
+        
+        const list = await db.supplyOrderDetail.findMany(
+            {
+                where: {
+                    supplyOrderId
+                },
+                include: {
+                    product: true
+                }
+            }
+        )
+        if (!list) return false 
+        await sendMailSupplier(supplier.email, list, supplyOrder?.totalPrice as number, supplyOrderId)
+        return true
+    }
 }
 
 export default SupplyOrderRepository

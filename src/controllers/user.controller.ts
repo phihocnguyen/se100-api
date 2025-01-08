@@ -4,6 +4,7 @@ import UserService from "../services/user.service";
 
 import { jwtDecode } from "jwt-decode"
 import { sendVerificationEmail } from "../helpers/verification-email-sender";
+import searchAPI from "../libs/chatbox";
 class UserController {
     private readonly userService : UserService
     constructor () {
@@ -98,6 +99,13 @@ class UserController {
         try {
             res.clearCookie('token')
             res.status(200).json({ message: 'Logout successful. Token cookie deleted.' });
+        } catch (error : unknown) {
+            next(error)
+        }
+    }
+    async chatAPI(req: Request, res: Response, next:NextFunction) {
+        try {
+            res.status(200).json(await searchAPI(req.body.demand))
         } catch (error : unknown) {
             next(error)
         }

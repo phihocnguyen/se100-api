@@ -47,28 +47,52 @@ class DisplayedProductRepository {
         return detailProduct
     }
 
-    async filter(category: string, brand: string, camera: number, rom: number): Promise<DisplayedProduct[] | null> {
+    async filter(
+        category: string,
+        brand: string,
+        camera: number,
+        rom: number,
+        ram: string,
+        hardDrive: string,
+        CPU: string,
+        price: number
+      ): Promise<DisplayedProduct[] | null> {
+        // Extract numerical values from RAM and HardDrive
+        ram = ram && ram.split("G")[0];
+        hardDrive = hardDrive && hardDrive.split("G")[0];
+      
         const list = await db.displayedProduct.findMany({
-            where: {
-                product: {
-                    category: {
-                        categoryName: category
-                    },
-                    // Apply brand filter if provided, allow for multiple brands (Apple, Samsung, Xiaomi, Oppo)
-                    brand: brand && ['Apple', 'Samsung', 'Xiaomi', 'Oppo'].includes(brand) ? brand : undefined,
-                    
-                    // Apply camera filter if camera is provided
-                    camera: camera ? { gte: camera >= 11 && camera <= 15 ? 11 : 16 } : undefined, 
-                    
-                    // Apply ROM filter if ROM is provided
-                    rom: rom ? { in: [64, 128, 256] } : undefined, 
-                }
-            },
-            include: {
-                    product: true
-                }   
-        });
+          where: {
+            product: {
+              category: {
+                categoryName: category,
+              },
+              sellingPrice: price ? { lte: price, gte: 10000000 } : undefined,
+              brand: brand ? brand : undefined,
 
+              camera: camera
+                ? {
+                    gte: camera >= 11 && camera <= 15 ? 11 : 16,
+                  }
+                : undefined,
+      
+
+              rom: rom ? { in: [64, 128, 256] } : undefined,
+      
+
+              ram: ram ? { equals: +ram } : undefined, 
+
+              hardDrive: hardDrive ? { equals: +hardDrive } : undefined,
+      
+
+              cpu: CPU ? { contains: CPU } : undefined, 
+            },
+          },
+          include: {
+            product: true,
+          },
+        });
+      
         return list;
     }
 

@@ -16,8 +16,8 @@ class DisplayedProductService {
     async getDetail(SKU : string) : Promise<DisplayedProduct[] | null> {
         return await this.displayedProductRepository.getDetail(SKU)
     }
-    async filter(category: string, brand: string, camera: number, rom: number) : Promise<DisplayedProduct[] | null> {
-        return await this.displayedProductRepository.filter(category, brand, camera, rom)
+    async filter(category: string, brand: string, camera: number, rom: number, ram: string, HardDrive: string, CPU: string, price: number) : Promise<DisplayedProduct[] | null> {
+        return await this.displayedProductRepository.filter(category, brand, camera, rom, ram, HardDrive, CPU, price)
     }
     async filterPrice(status : string) : Promise<DisplayedProduct[] | null> {
         return await this.displayedProductRepository.filterPrice(status)

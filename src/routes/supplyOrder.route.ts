@@ -12,6 +12,7 @@ class SupplyOrderRoute {
         this.router.get('/', this.supplyOrderController.getAllSupplyOrders.bind(this.supplyOrderController))
         this.router.get('/:id', this.supplyOrderController.getById.bind(this.supplyOrderController))
         this.router.patch('/:id', this.supplyOrderController.updateStatus.bind(this.supplyOrderController))
+        this.router.post('/send-email', this.supplyOrderController.sendEmail.bind(this.supplyOrderController))
     }
 }
 export default SupplyOrderRoute

@@ -17,6 +17,7 @@ class UserRoute {
         this.router.get('/verify', this.userController.verifyEmail.bind(this.userController))
         this.router.get('/cookie', this.userController.decode.bind(this.userController))
         this.router.get('/logout', this.userController.logout.bind(this.userController))
+        this.router.post('/chatbox', this.userController.chatAPI.bind(this.userController))
         
     }
 }

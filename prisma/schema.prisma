@@ -74,6 +74,9 @@ model Product {
     brand              String
     camera             Int?
     rom                Int?
+    ram Int?
+    hardDrive Int?
+    cpu String?
     quantity           Int?
     description        String
     inventories        Inventory[]

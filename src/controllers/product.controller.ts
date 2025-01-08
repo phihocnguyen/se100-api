@@ -13,6 +13,8 @@ class ProductController {
             req.body.sellingPrice = parseInt(req.body.sellingPrice)
             req.body.rom = parseInt(req.body.rom)
             req.body.camera = parseInt(req.body.camera)
+            req.body.ram = parseInt(req.body.ram)
+            req.body.hardDrive = parseInt(req.body.hardDrive)
             const newProduct = await this.productService.create(req.body, req.files)
             res.status(201).json(newProduct)
         } catch (error : unknown) {

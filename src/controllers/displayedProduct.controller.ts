@@ -34,7 +34,7 @@ class DisplayedProductController {
     }
     async filter(req: Request, res: Response, next: NextFunction){
         try {
-            const list = await this.displayedProductService.filter(req.params.category, req.query.brand as string, parseInt(req.query.camera as string), parseInt(req.query.rom as string))
+            const list = await this.displayedProductService.filter(req.params.category, req.query.brand as string, parseInt(req.query.camera as string), parseInt(req.query.rom as string), req.query.RAM as string, req.query.HardDrive as string, req.query.CPU as string, parseInt(req.query.price as string))
             res.status(200).json(list)
         } catch (error : unknown) {
             next(error)
