@@ -16,28 +16,29 @@ import FeedbackRoute from "./feedback.route";
 import InventoryRoute from "./inventory.route";
 import warehouseRoute from "./warehouse.route";
 import ReportRoute from "./report.route";
+import VoucherRoute from "./voucher.route";
 
 class IndexRoute {
-    public readonly router : Router
-    private readonly userRoute : UserRoute
-    private readonly customerRoute : CustomerRoute
-    private readonly supplierRoute : SupplierRoute
-    private readonly supplyOrderRoute : SupplyOrderRoute
-    private readonly displayedProductRoute : DisplayedProductRoute
-    private readonly productRoute : ProductRoute
-    private readonly supplyOrderDetailRoute : SupplyOrderDetailRoute
-    private readonly categoryRoute : CategoryRoute
-    private readonly brandRoute : BrandRoute
-    private readonly employeeRoute : EmployeeRoute
-    private readonly authRoute : AuthRoute;
-    private readonly invoiceRoute : InvoiceRoute
-    private readonly invoiceDetailRoute : InvoiceDetailRoute
-    private readonly feedbackRoute : FeedbackRoute
-    private readonly inventoryRoute : InventoryRoute
-    private readonly warehouseRoute : warehouseRoute
-    private readonly reportRoute : ReportRoute
-
-    constructor () {
+    public readonly router: Router
+    private readonly userRoute: UserRoute
+    private readonly customerRoute: CustomerRoute
+    private readonly supplierRoute: SupplierRoute
+    private readonly supplyOrderRoute: SupplyOrderRoute
+    private readonly displayedProductRoute: DisplayedProductRoute
+    private readonly productRoute: ProductRoute
+    private readonly supplyOrderDetailRoute: SupplyOrderDetailRoute
+    private readonly categoryRoute: CategoryRoute
+    private readonly brandRoute: BrandRoute
+    private readonly employeeRoute: EmployeeRoute
+    private readonly authRoute: AuthRoute;
+    private readonly invoiceRoute: InvoiceRoute
+    private readonly invoiceDetailRoute: InvoiceDetailRoute
+    private readonly feedbackRoute: FeedbackRoute
+    private readonly inventoryRoute: InventoryRoute
+    private readonly warehouseRoute: warehouseRoute
+    private readonly reportRoute: ReportRoute
+    private readonly voucherRoute: VoucherRoute
+    constructor() {
         this.router = Router()
         this.userRoute = new UserRoute()
         this.customerRoute = new CustomerRoute()
@@ -56,12 +57,13 @@ class IndexRoute {
         this.inventoryRoute = new InventoryRoute()
         this.warehouseRoute = new warehouseRoute()
         this.reportRoute = new ReportRoute()
+        this.voucherRoute = new VoucherRoute()
         this.initRoutes()
     }
 
     private initRoutes() {
         this.router.use('/user', this.userRoute.router)
-        this.router.use('/customer',this.customerRoute.router)
+        this.router.use('/customer', this.customerRoute.router)
         this.router.use('/supplier', this.supplierRoute.router)
         this.router.use('/supply-order', this.supplyOrderRoute.router)
         this.router.use('/supply-order-detail', this.supplyOrderDetailRoute.router)
@@ -77,6 +79,7 @@ class IndexRoute {
         this.router.use('/inventory', this.inventoryRoute.router)
         this.router.use('/warehouse', this.warehouseRoute.router)
         this.router.use('/report', this.reportRoute.router);
+        this.router.use('/voucher', this.voucherRoute.router)
     }
 }
 export default new IndexRoute().router
