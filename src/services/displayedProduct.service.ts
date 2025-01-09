@@ -22,6 +22,10 @@ class DisplayedProductService {
     async filterPrice(status : string) : Promise<DisplayedProduct[] | null> {
         return await this.displayedProductRepository.filterPrice(status)
     }
+
+    async getDisplayedProducts(categoryName: string, limit: number) {
+        return await this.displayedProductRepository.getDisplayedProductsByCategory(categoryName, limit);
+    }
 }
 
 export default DisplayedProductService

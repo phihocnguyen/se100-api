@@ -1,5 +1,6 @@
 import { DisplayedProduct } from "@prisma/client";
 import db from "../config/db";
+import { Prisma } from "@prisma/client";
 
 class DisplayedProductRepository {
     async create(data : DisplayedProduct) : Promise<DisplayedProduct | null> {
@@ -104,6 +105,26 @@ class DisplayedProductRepository {
             }
         });
         return list
+    }
+
+    async getDisplayedProductsByCategory(categoryName: string, limit: Number): Promise<DisplayedProduct[] | null> {
+        const result = await db.$queryRaw<DisplayedProduct[]>(Prisma.sql`
+            SELECT dp.*, p.*
+            FROM "DisplayedProduct" dp
+            JOIN "Product" p
+            ON dp."productId" = p."SKU"
+            WHERE p."categoryId" =
+                (SELECT c."id"
+                FROM "Category" c
+                WHERE c."categoryName" = ${categoryName})
+            ORDER BY RANDOM()
+            LIMIT ${limit}
+        `);
+
+        if (!result) {
+            return null;
+        }
+        return result;
     }
 }
 

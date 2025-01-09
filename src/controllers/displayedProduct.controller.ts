@@ -48,6 +48,22 @@ class DisplayedProductController {
             next(error)
         }
     }
+
+    
+    async getDisplayedProductsByCategory(req: Request, res: Response, next: NextFunction) {
+        try {
+            const categoryName: string = req.params.categoryName;
+            const limit = parseInt(req.query.limit as string, 10);
+            if (!categoryName || isNaN(limit)) {
+                throw new Error("Query or parameter is not valid");
+            }
+
+            const result = await this.displayedProductService.getDisplayedProducts(categoryName, limit);
+            res.status(200).json(result);
+        } catch (error: unknown) { 
+            next(error);
+        }
+    }
 }
 
 export default DisplayedProductController
